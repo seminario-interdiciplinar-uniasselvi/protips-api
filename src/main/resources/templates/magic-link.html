@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magic Link Email</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    table {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-collapse: collapse;
+      border: 1px solid #dddddd;
+    }
+    table th, table td {
+      padding: 15px;
+      text-align: left;
+    }
+    table th {
+      background-color: #f8f8f8;
+      border-bottom: 1px solid #dddddd;
+    }
+    a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 20px;
+      background-color: #28a745;
+      border-radius: 4px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<table>
+  <tr>
+    <th colspan="2">Acesso Seguro</th>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <p>Olá,</p>
+      <p>Você solicitou acesso à sua conta. Clique no botão abaixo para acessar através do link mágico:</p>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="text-align: center;">
+      <a href="${url}" class="button">Acessar sua conta</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <p>Se você não solicitou este link, por favor, ignore este email.</p>
+      <p>Obrigado!</p>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -23,11 +23,16 @@ public class Newsletter {
   private String description;
   private List<NewsletterSubscriber> subscribers = new ArrayList<>();
   private List<NewsletterEmailContent> contents = new ArrayList<>();
-  private CronExpression cron;
+  private String cron;
+  private String userId;
   private boolean active;
 
   public void addSubscriber(NewsletterSubscriber subscriber) {
     this.subscribers.add(subscriber);
+  }
+
+  public void removeSubscriber(String email) {
+    this.subscribers.removeIf(subscriber -> subscriber.getEmail().equals(email));
   }
 
   public void addContent(NewsletterEmailContent content) {
@@ -37,6 +42,12 @@ public class Newsletter {
   public Optional<NewsletterEmailContent> getCurrentEmailContent() {
     return this.contents.stream()
       .filter(NewsletterEmailContent::isCurrent)
+      .findFirst();
+  }
+
+  public Optional<NewsletterEmailContent> getContent(String subject) {
+    return this.contents.stream()
+      .filter(content -> content.getSubject().equals(subject))
       .findFirst();
   }
 }

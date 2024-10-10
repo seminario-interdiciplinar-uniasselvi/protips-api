@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificação de Conta</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .email-container {
+      background-color: #f0f0f0;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .email-header {
+      text-align: center;
+      padding-bottom: 20px;
+    }
+    .email-content {
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .email-content table {
+      width: 100%;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .email-content td {
+      padding: 10px;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #888888;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<div class="email-container">
+  <div class="email-header">
+    <h2>Confirmação de Conta</h2>
+  </div>
+  <div class="email-content">
+    <table>
+      <tr>
+        <td>
+          <p>Olá, ${name},</p>
+          <p>Obrigado por se registrar! Para concluir o processo de verificação da sua conta, por favor clique no link abaixo:</p>
+          <table align="center" style="margin: 20px 0;">
+            <tr>
+              <td align="center" bgcolor="#4CAF50" style="border-radius: 5px;">
+                <a href="${url}" target="_blank" style="font-size: 16px; font-family: Arial, sans-serif; color: #ffffff; text-decoration: none; padding: 10px 20px; display: inline-block;">Verificar Conta</a>
+              </td>
+            </tr>
+          </table>
+          <p>Se você não se registrou para essa conta, por favor ignore este e-mail.</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="footer">
+    <p>Atenciosamente,<br>Sua Equipe</p>
+  </div>
+</div>
+</body>
+</html>
