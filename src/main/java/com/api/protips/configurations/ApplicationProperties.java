@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 
   private String baseUrl;
+  private String frontBaseUrl;
   private Jwt jwt;
   private Cors cors;
 
@@ -28,7 +29,7 @@ public class ApplicationProperties {
   @Setter
   public static class Cors {
 
-    private String allowedOrigins;
+    private String[] allowedOrigins;
     private String allowedMethods;
     private String allowedHeaders;
     private String exposedHeaders;

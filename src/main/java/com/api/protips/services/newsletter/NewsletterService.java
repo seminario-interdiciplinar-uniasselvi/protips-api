@@ -2,20 +2,35 @@ package com.api.protips.services.newsletter;
 
 import com.api.protips.controllers.dto.newsletter.NewsletterDTO;
 import com.api.protips.controllers.dto.newsletter.NewsletterRequest;
+import com.api.protips.models.newsletter.NewsletterEmailContent;
 import com.api.protips.models.newsletter.NewsletterSubscriber;
-import java.util.List;
 
 public interface NewsletterService {
 
   NewsletterDTO createNewsletter(NewsletterRequest newsletterDTO, String userId);
 
+  void addContent(
+    NewsletterEmailContent content,
+    String newsletterId
+  );
+  NewsletterEmailContent findContent(
+    String subject,
+    String newsletterId
+  );
+
   void updateNewsletter(NewsletterDTO newsletterDTO, String newsletterId);
+
+  void updateNewsletterContent(
+    NewsletterEmailContent content,
+    String newsletterId,
+    String subject
+  );
 
   NewsletterDTO getNewsletterById(String newsletterId);
 
   void deleteNewsletter(String newsletterId);
 
-  List<NewsletterDTO> findAllByUser(String userId);
+  NewsletterDTO findByUser(String userId);
 
   void subscribe(NewsletterSubscriber subscriber, String newsletterId);
 

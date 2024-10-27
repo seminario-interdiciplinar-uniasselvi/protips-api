@@ -16,6 +16,5 @@ public class NewsletterRequest {
 
   private String title;
   private String description;
-  private NewsletterEmailContent content;
   private String cron;
 }

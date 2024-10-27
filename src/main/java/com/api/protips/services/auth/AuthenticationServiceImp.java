@@ -41,11 +41,11 @@ public class AuthenticationServiceImp implements AuthenticationService {
         Template.MAGIC_LINK
       );
 
-      String token = jwtService.generateToken(user);
+      String token = jwtService.generateShortLivedToken(user);
 
-      String baseUrl = applicationProperties.getBaseUrl();
+      String baseUrl = applicationProperties.getFrontBaseUrl();
       String loginUrl = UriComponentsBuilder
-        .fromHttpUrl(baseUrl.concat("/v1/auth/authenticate"))
+        .fromHttpUrl(baseUrl.concat("/magic-link-redirect"))
         .queryParam("token", token)
         .build()
         .toString();
@@ -64,9 +64,9 @@ public class AuthenticationServiceImp implements AuthenticationService {
       .findByEmail(email)
       .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-    if (!user.isVerified()) {
-      throw new ForbiddenException("User not verified");
-    }
+//    if (!user.isVerified()) {
+//      throw new ForbiddenException("User not verified");
+//    }
 
     UsernamePasswordAuthenticationToken authToken =
       new UsernamePasswordAuthenticationToken(

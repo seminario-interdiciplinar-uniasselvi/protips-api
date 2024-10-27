@@ -32,7 +32,7 @@ public class SimpleMailSender implements MailSender {
     Map<String, Object> parameters
   ) {
     if (emailDTO.getTo() == null || emailDTO.getTo().length == 0) {
-      log.info("No recipient found");
+      log.debug("No recipient found");
       return;
     }
     try {

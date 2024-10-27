@@ -37,12 +37,25 @@ public class JwtService {
     claims.put("id", user.getId());
     return generateToken(claims, user);
   }
+  public String generateShortLivedToken(User user) {
+    final HashMap<String, Object> claims = new HashMap<>();
+    claims.put("id", user.getId());
+    final long fiveMinutesExpiration = 300000;
+    return generateToken(claims, user, fiveMinutesExpiration);
+  }
 
   public String generateToken(
     Map<String, Object> extraClaims,
     User user
   ) {
     final long jwtExpiration = Long.parseLong(applicationProperties.getJwt().getExpiration());
+    return buildToken(extraClaims, user, jwtExpiration);
+  }
+  public String generateToken(
+    Map<String, Object> extraClaims,
+    User user,
+    long jwtExpiration
+  ) {
     return buildToken(extraClaims, user, jwtExpiration);
   }
 

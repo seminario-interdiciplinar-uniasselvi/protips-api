@@ -10,15 +10,11 @@ import com.api.protips.mail.dto.EmailDTO;
 import com.api.protips.models.newsletter.Newsletter;
 import com.api.protips.models.newsletter.NewsletterEmailContent;
 import com.api.protips.models.newsletter.NewsletterSubscriber;
-import com.api.protips.models.user.User;
 import com.api.protips.repositories.NewsletterRepository;
 import com.api.protips.repositories.UserRepository;
-import com.google.gson.Gson;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.quartz.CronExpression;
@@ -45,12 +41,9 @@ public class NewsletterServiceImpl implements NewsletterService {
     if (!validExpression) {
       throw new UnexpectedException("Invalid cron expression");
     }
-    NewsletterEmailContent content = newsletterRequest.getContent();
-    content.setCurrent(true);
     Newsletter newsletter = mapper.map(newsletterRequest, Newsletter.class);
     newsletter.setUserId(userId);
     newsletter.setActive(true);
-    newsletter.addContent(content);
     Newsletter saved = newsletterRepository.save(newsletter);
 
     try {
@@ -66,11 +59,63 @@ public class NewsletterServiceImpl implements NewsletterService {
   }
 
   @Override
+  public void addContent(NewsletterEmailContent content, String newsletterId) {
+    Newsletter newsletter = newsletterRepository.findById(newsletterId)
+      .orElseThrow(() -> new ResourceNotFoundException("Newsletter not found"));
+
+    content.setCurrent(true);
+    newsletter.addContent(content);
+
+    newsletterRepository.save(newsletter);
+  }
+
+  @Override
+  public NewsletterEmailContent findContent(String subject, String newsletterId) {
+    Newsletter newsletter = newsletterRepository.findById(newsletterId)
+      .orElseThrow(() -> new ResourceNotFoundException("Newsletter not found"));
+
+    return newsletter.getContent(subject)
+        .orElseThrow(() -> new ResourceNotFoundException("Content not found"));
+  }
+
+  @Override
   public void updateNewsletter(NewsletterDTO newsletterDTO, String newsletterId) {
     Newsletter newsletter = newsletterRepository.findById(newsletterId)
       .orElseThrow(() -> new ResourceNotFoundException("Newsletter not found"));
 
+    if (newsletterDTO.getCron() != null){
+      boolean validExpression = CronExpression.isValidExpression(newsletterDTO.getCron());
+      if (!validExpression) {
+        throw new UnexpectedException("Invalid cron expression");
+      }
+      try {
+        emailSchedulerService.scheduleEmail(
+          newsletter.getId(),
+          new CronExpression(newsletterDTO.getCron())
+        );
+      } catch (SchedulerException | ParseException e) {
+        throw new UnexpectedException(e.getMessage());
+      }
+    }
     mapper.map(newsletterDTO, newsletter);
+
+    newsletterRepository.save(newsletter);
+  }
+
+  @Override
+  public void updateNewsletterContent(
+    NewsletterEmailContent newContent,
+    String newsletterId,
+    String subject
+  ) {
+    Newsletter newsletter = newsletterRepository.findById(newsletterId)
+      .orElseThrow(() -> new ResourceNotFoundException("Newsletter not found"));
+
+    NewsletterEmailContent oldContent = newsletter
+      .getContent(subject)
+      .orElseThrow(() -> new ResourceNotFoundException("Subject not found"));
+
+    mapper.map(newContent, oldContent);
 
     newsletterRepository.save(newsletter);
   }
@@ -88,11 +133,10 @@ public class NewsletterServiceImpl implements NewsletterService {
   }
 
   @Override
-  public List<NewsletterDTO> findAllByUser(String userId) {
+  public NewsletterDTO findByUser(String userId) {
     return newsletterRepository.findByUserId(userId)
-      .stream()
       .map(newsletter -> mapper.map(newsletter, NewsletterDTO.class))
-      .toList();
+      .orElseThrow(() -> new ResourceNotFoundException("Newsletter not found"));
   }
 
   @Override

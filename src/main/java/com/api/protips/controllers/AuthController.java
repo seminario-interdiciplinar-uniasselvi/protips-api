@@ -3,6 +3,7 @@ package com.api.protips.controllers;
 import com.api.protips.controllers.dto.auth.TokenDTO;
 import com.api.protips.controllers.dto.users.UserDTO;
 import com.api.protips.services.auth.AuthenticationService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,8 @@ public class AuthController {
   @GetMapping("/verify-account")
   public ResponseEntity<Void> verifyAccount(
     @RequestParam String email,
-    @RequestParam String token
+    @RequestParam String token,
+    HttpServletResponse response
   ) {
     authenticationService.verifyAccount(email, token);
     return ResponseEntity.noContent().build();

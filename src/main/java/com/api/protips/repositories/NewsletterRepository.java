@@ -9,5 +9,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface NewsletterRepository extends MongoRepository<Newsletter, String> {
 
-  List<Newsletter> findByUserId(String userId);
+  Optional<Newsletter> findByUserId(String userId);
 }

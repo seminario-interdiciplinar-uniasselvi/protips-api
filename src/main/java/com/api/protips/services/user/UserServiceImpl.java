@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     User user = mapper.map(userDTO, User.class);
     user.setPassword(encoder.encode(""));
     User saved = userRepository.save(user);
-    authenticationService.sendAccountVerification(saved.getEmail());
+//    authenticationService.sendAccountVerification(saved.getEmail());
     return mapper.map(saved, UserDTO.class);
   }
 

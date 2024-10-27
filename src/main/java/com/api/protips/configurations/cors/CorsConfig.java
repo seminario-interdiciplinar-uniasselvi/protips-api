@@ -6,6 +6,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +30,7 @@ public class CorsConfig extends OncePerRequestFilter {
       HttpServletResponse response,
       FilterChain filterChain
     ) throws ServletException, IOException {
-        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, applicationProperties.getCors().getAllowedOrigins());
+        response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, httpReq.getHeader("origin"));
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, String.valueOf(applicationProperties.getCors().isAllowCredentials()));
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, applicationProperties.getCors().getAllowedMethods());
         response.setHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, applicationProperties.getCors().getMaxAge());
