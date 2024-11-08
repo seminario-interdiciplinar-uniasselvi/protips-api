@@ -38,4 +38,5 @@ public interface NewsletterService {
 
   void sendNewsletter(String newsletterId, String subject);
 
+  void deleteContent(String subject, String newsletterId);
 }

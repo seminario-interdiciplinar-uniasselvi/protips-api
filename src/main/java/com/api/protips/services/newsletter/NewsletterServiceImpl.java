@@ -196,4 +196,14 @@ public class NewsletterServiceImpl implements NewsletterService {
 
     sender.send(email, new HashMap<>());
   }
+
+  @Override
+  public void deleteContent(String subject, String newsletterId) {
+    Newsletter newsletter = newsletterRepository.findById(newsletterId)
+      .orElseThrow(() -> new ResourceNotFoundException("Newsletter not found"));
+
+    newsletter.removeContent(subject);
+
+    newsletterRepository.save(newsletter);
+  }
 }

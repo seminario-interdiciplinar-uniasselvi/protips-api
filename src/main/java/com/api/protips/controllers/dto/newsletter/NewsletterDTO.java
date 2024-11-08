@@ -20,5 +20,5 @@ public class NewsletterDTO {
   private List<NewsletterSubscriber> subscribers = new ArrayList<>();
   private List<NewsletterEmailContent> contents = new ArrayList<>();
   private String cron;
-  private boolean active;
+  private Boolean active;
 }

@@ -50,4 +50,8 @@ public class Newsletter {
       .filter(content -> content.getSubject().equals(subject))
       .findFirst();
   }
+
+  public void removeContent(String subject) {
+    this.contents.removeIf(content -> content.getSubject().equals(subject));
+  }
 }

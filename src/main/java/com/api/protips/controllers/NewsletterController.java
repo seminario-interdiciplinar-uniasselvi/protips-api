@@ -84,6 +84,15 @@ public class NewsletterController {
     );
     return ResponseEntity.noContent().build();
   }
+  @DeleteMapping("/{newsletterId}/content/{subject}")
+  public ResponseEntity<Void> deleteContent(
+    @PathVariable String newsletterId,
+    @PathVariable String subject,
+    @PathVariable String userId
+  ) {
+    newsletterService.deleteContent(subject, newsletterId);
+    return ResponseEntity.noContent().build();
+  }
 
   @GetMapping("/{newsletterId}")
   public ResponseEntity<NewsletterDTO> getNewsletterById(
