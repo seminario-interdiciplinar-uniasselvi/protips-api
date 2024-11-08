@@ -1,5 +1,6 @@
 package com.api.protips.services.user;
 
+import com.api.protips.configurations.mail.EmailSchedulerService;
 import com.api.protips.controllers.dto.users.UserDTO;
 import com.api.protips.exceptions.ResourceAlreadyExistsException;
 import com.api.protips.exceptions.ResourceNotFoundException;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +20,8 @@ public class UserServiceImpl implements UserService {
   private final AuthenticationService authenticationService;
   private final ModelMapper mapper;
   private final PasswordEncoder encoder;
+  private final EmailSchedulerService emailSchedulerService;
+
   @Override
   public UserDTO createUser(UserDTO userDTO) {
     checkUser(userDTO);
@@ -49,7 +51,10 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public void deleteUser(String userId) {
+
     userRepository.deleteById(userId);
+    emailSchedulerService.unscheduledEmail(userId);
+
   }
 
   private void checkUser(UserDTO userDTO) {

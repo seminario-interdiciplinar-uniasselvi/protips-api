@@ -1,11 +1,9 @@
 package com.api.protips.configurations.mail;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.quartz.CronExpression;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
@@ -18,6 +16,7 @@ import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class EmailSchedulerService {
@@ -53,5 +52,16 @@ public class EmailSchedulerService {
 
     scheduler.scheduleJob(jobDetail, trigger);
 
+  }
+
+  public void unscheduledEmail(String userId) {
+    JobKey jobKey = JobKey.jobKey(userId);
+    TriggerKey triggerKey = TriggerKey.triggerKey(userId);
+    try {
+      scheduler.deleteJob(jobKey);
+      scheduler.unscheduleJob(triggerKey);
+    } catch (SchedulerException e) {
+      log.error("Error unscheduling email", e);
+    }
   }
 }
